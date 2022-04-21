@@ -1,66 +1,93 @@
 package com.example.demo.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import java.util.Date;
 
 @Entity
 @Table(name="usuarios")
-@EntityListeners(AuditingEntityListener.class)
 public class Usuario {
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
-	@Column(name = "nombre")
-	private String nombre;
-	@Column(name = "clave")
-	private String clave;
-	@Column(name = "dni")
-	private String dni;
-	public int getId() {
+	private Integer id;
+
+	@Column(nullable = false)
+	private String name;
+
+	@Column(unique = true, nullable = false)
+	private String email;
+
+	private String password;
+	private Boolean enabled;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdAt;
+
+	public Usuario() {}
+
+	public Usuario(int id, String name, String email, String password, Boolean enabled, Date createdAt) {
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.enabled = enabled;
+		this.createdAt = createdAt;
+	}
+
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
-		this.id = id;
+
+	public String getName() {
+		return name;
 	}
-	public String getNombre() {
-		return nombre;
+
+	public void setName(String name) {
+		this.name = name;
 	}
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+
+	public String getEmail() {
+		return email;
 	}
-	public String getClave() {
-		return clave;
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
-	public void setClave(String clave) {
-		this.clave = clave;
+
+	public String getPassword() {
+		return password;
 	}
-	public String getDni() {
-		return dni;
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
-	public void setDni(String dni) {
-		this.dni = dni;
+
+	public Boolean getEnabled() {
+		return enabled;
 	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
 	@Override
 	public String toString() {
-		return "Usuario [id=" + id + ", nombre=" + nombre + ", clave=" + clave + ", dni=" + dni + "]";
+		return "Usuario{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", email='" + email + '\'' +
+				", password='" + password + '\'' +
+				", enabled=" + enabled +
+				", createdAt=" + createdAt +
+				'}';
 	}
-	public Usuario(int id, String nombre, String clave, String dni) {
-		super();
-		this.id = id;
-		this.nombre = nombre;
-		this.clave = clave;
-		this.dni = dni;
-	}
-	public Usuario() {
-		super();
-	}
-	
-	
 }

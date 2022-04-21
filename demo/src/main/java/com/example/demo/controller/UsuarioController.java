@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,36 +23,47 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
-	@GetMapping("/obtener")
-	public List<Usuario> allUsuarios(){
+	@GetMapping("")
+	public List<Usuario> all(){
 		return usuarioRepository.findAll();
 	}
+
+	@GetMapping("{id}")
+	public Optional<Usuario> get(@PathVariable Integer id){
+		return usuarioRepository.findById(id);
+	}
 	
-	@PostMapping("/insertar")
-	public Usuario insertarUsuario(@RequestBody Usuario usuario) {
+	@PostMapping("")
+	public Usuario create(@RequestBody Usuario usuario) {
 		return usuarioRepository.save(usuario);
 	}
 	
-	@PutMapping("/actualizar/{dni}")
-	public Usuario actualizarUsuario(@PathVariable String dni, @RequestBody Usuario usuario) {
-		Usuario usuarioActualizado = usuarioRepository.findByDni(dni);
-		usuarioActualizado.setNombre(usuario.getNombre());
-		usuarioActualizado.setClave(usuario.getClave());
-		usuarioActualizado.setDni(usuario.getDni());
-		
-		return usuarioRepository.save(usuarioActualizado);
+	@PutMapping("{id}")
+	public Usuario update(@PathVariable Integer id, @RequestBody Usuario usuario) {
+		Optional<Usuario> usuarioDB = usuarioRepository.findById(id);
+
+		if (usuarioDB.isPresent()) {
+			Usuario usuarioActualizado = usuarioDB.get();
+			usuarioActualizado.setName(usuario.getName());
+			usuarioActualizado.setEmail(usuario.getEmail());
+			usuarioActualizado.setPassword(usuario.getPassword());
+			usuarioActualizado.setEnabled(usuario.getEnabled());
+			usuarioActualizado.setCreatedAt(usuario.getCreatedAt());
+
+			return usuarioRepository.save(usuarioActualizado);
+		}
+
+
+		return null;
+
 	}
 	
-	@DeleteMapping("/borrar/{id}")
-	public void borrarUsuario(@PathVariable int id) {
+	@DeleteMapping("{id}")
+	public void borrarUsuario(@PathVariable Integer id) {
 		usuarioRepository.deleteById(id);
 	}
 	
-	@DeleteMapping("/borrarDni/{dni}")
-	public void borrarUsuarioDni(@PathVariable String dni) {
-		Usuario usuarioBorrar = usuarioRepository.findByDni(dni);
-		usuarioRepository.deleteById(usuarioBorrar.getId());
-	}
+
 	
 	
 }
