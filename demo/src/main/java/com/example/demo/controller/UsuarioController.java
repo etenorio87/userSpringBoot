@@ -4,18 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.model.Usuario;
 import com.example.demo.repository.UsuarioRepository;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
@@ -47,7 +41,7 @@ public class UsuarioController {
 			usuarioActualizado.setName(usuario.getName());
 			usuarioActualizado.setEmail(usuario.getEmail());
 			usuarioActualizado.setPassword(usuario.getPassword());
-			usuarioActualizado.setEnabled(usuario.getEnabled());
+			usuarioActualizado.setEnabled(usuario.isEnabled());
 			usuarioActualizado.setCreatedAt(usuario.getCreatedAt());
 
 			return usuarioRepository.save(usuarioActualizado);
