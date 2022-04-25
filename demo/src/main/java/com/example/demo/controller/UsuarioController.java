@@ -1,52 +1,48 @@
 package com.example.demo.controller;
 
 import java.util.List;
-import java.util.Optional;
 
+import com.example.demo.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.example.demo.domain.model.Usuario;
 
-import com.example.demo.model.Usuario;
-import com.example.demo.repository.UsuarioRepository;
-
-@CrossOrigin
 @RestController
 @RequestMapping("/usuarios")
+@CrossOrigin(origins = "http://localhost:4200")
 public class UsuarioController {
 	
 	@Autowired
-	private UsuarioRepository usuarioRepository;
+	private UsuarioService service;
 	
 	@GetMapping("")
 	public List<Usuario> all(){
-		return usuarioRepository.findAll();
+		return service.findAll();
 	}
 
 	@GetMapping("{id}")
-	public Optional<Usuario> get(@PathVariable Integer id){
-		return usuarioRepository.findById(id);
+	public Usuario get(@PathVariable Integer id){
+		return service.findById(id);
 	}
 	
 	@PostMapping("")
 	public Usuario create(@RequestBody Usuario usuario) {
-		return usuarioRepository.save(usuario);
+		return service.save(usuario);
 	}
 	
 	@PutMapping("{id}")
 	public Usuario update(@PathVariable Integer id, @RequestBody Usuario usuario) {
-		Optional<Usuario> usuarioDB = usuarioRepository.findById(id);
+		Usuario usuarioDB = service.findById(id);
 
-		if (usuarioDB.isPresent()) {
-			Usuario usuarioActualizado = usuarioDB.get();
-			usuarioActualizado.setName(usuario.getName());
-			usuarioActualizado.setEmail(usuario.getEmail());
-			usuarioActualizado.setPassword(usuario.getPassword());
-			usuarioActualizado.setEnabled(usuario.isEnabled());
-			usuarioActualizado.setCreatedAt(usuario.getCreatedAt());
+		if (usuarioDB != null) {
+			usuarioDB.setName(usuario.getName());
+			usuarioDB.setEmail(usuario.getEmail());
+			usuarioDB.setPassword(usuario.getPassword());
+			usuarioDB.setEnabled(usuario.isEnabled());
+			usuarioDB.setCreatedAt(usuario.getCreatedAt());
 
-			return usuarioRepository.save(usuarioActualizado);
+			return service.save(usuarioDB);
 		}
-
 
 		return null;
 
@@ -54,10 +50,7 @@ public class UsuarioController {
 	
 	@DeleteMapping("{id}")
 	public void borrarUsuario(@PathVariable Integer id) {
-		usuarioRepository.deleteById(id);
+		service.deleteById(id);
 	}
-	
 
-	
-	
 }

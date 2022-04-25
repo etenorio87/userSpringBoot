@@ -1,12 +1,16 @@
-package com.example.demo.model;
+package com.example.demo.domain.model;
 
 import javax.persistence.*;
+
+import com.example.demo.domain.enums.ERole;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="usuarios")
@@ -28,15 +32,19 @@ public class Usuario implements UserDetails {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
 
+	@Enumerated(EnumType.STRING)
+	private ERole role;
+
 	public Usuario() {}
 
-	public Usuario(int id, String name, String email, String password, Boolean enabled, Date createdAt) {
+	public Usuario(int id, String name, String email, String password, Boolean enabled, Date createdAt, ERole role) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.enabled = enabled;
 		this.createdAt = createdAt;
+		this.role = role;
 	}
 
 	public Integer getId() {
@@ -59,15 +67,39 @@ public class Usuario implements UserDetails {
 		this.email = email;
 	}
 
+	public String getPassword() {
+		return password;
+	}
 
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public ERole getRole() {
+		return role;
+	}
+
+	public void setRole(ERole role) {
+		this.role = role;
+	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return new ArrayList<GrantedAuthority>();
-	}
-
-	public String getPassword() {
-		return password;
+		List<GrantedAuthority> roles = new ArrayList<>();
+		roles.add(new SimpleGrantedAuthority(role.toString()));
+		return roles;
 	}
 
 	@Override
@@ -95,22 +127,6 @@ public class Usuario implements UserDetails {
 		return enabled;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
-
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
 	@Override
 	public String toString() {
 		return "Usuario{" +
@@ -120,6 +136,7 @@ public class Usuario implements UserDetails {
 				", password='" + password + '\'' +
 				", enabled=" + enabled +
 				", createdAt=" + createdAt +
+				", role=" + role +
 				'}';
 	}
 }

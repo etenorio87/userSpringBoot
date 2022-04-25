@@ -1,7 +1,7 @@
 package com.example.demo.security;
 
-import com.example.demo.model.Usuario;
-import com.example.demo.repository.UsuarioRepository;
+import com.example.demo.domain.model.Usuario;
+import com.example.demo.repository.IUsuarioRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserDetailsServiceImpl implements UserDetailsService {
     public static final Logger log = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
-    private final UsuarioRepository repository;
+    private final IUsuarioRepository repository;
 
-    public UserDetailsServiceImpl(UsuarioRepository repository) {
+    public UserDetailsServiceImpl(IUsuarioRepository repository) {
         this.repository = repository;
     }
 

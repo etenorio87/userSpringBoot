@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Usuario;
+import com.example.demo.domain.model.Usuario;
 import com.example.demo.payloads.request.LoginRequestDTO;
 import com.example.demo.services.UsuarioService;
 import org.springframework.web.bind.annotation.*;

@@ -1,7 +1,7 @@
 package com.example.demo.services;
 
-import com.example.demo.model.Usuario;
-import com.example.demo.repository.UsuarioRepository;
+import com.example.demo.domain.model.Usuario;
+import com.example.demo.repository.IUsuarioRepository;
 import com.example.demo.services.base.BaseService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,11 +10,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UsuarioService extends BaseService<Usuario, Integer, UsuarioRepository> {
+public class UsuarioService extends BaseService<Usuario, Integer, IUsuarioRepository> {
     private final AuthenticationManager authenticationManager;
 
 
-    public UsuarioService(AuthenticationManager authenticationManager, UsuarioRepository repository) {
+    public UsuarioService(AuthenticationManager authenticationManager, IUsuarioRepository repository) {
         this.authenticationManager = authenticationManager;
         this.repository = repository;
     }
