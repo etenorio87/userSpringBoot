@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.example.demo.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import com.example.demo.domain.model.Usuario;
 
@@ -16,8 +18,15 @@ public class UsuarioController {
 	private UsuarioService service;
 	
 	@GetMapping("")
-	public List<Usuario> all(){
-		return service.findAll();
+	public Page<Usuario> all(){
+		return service.findAll( PageRequest.of(0, 10) );
+	}
+
+	@GetMapping("page/{pageNumber}")
+	public Page<Usuario> getByPage(@PathVariable Integer pageNumber) {
+		return service.findAll(
+				PageRequest.of(pageNumber, 10)
+		);
 	}
 
 	@GetMapping("{id}")
